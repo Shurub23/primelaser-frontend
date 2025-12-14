@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 export default function Contact() {
   const [form, setForm] = useState({
@@ -42,6 +43,9 @@ export default function Contact() {
   };
 
   return (
+<>
+<Navbar />
+<main style={{ padding: 40 }}>
     <div>
       <h1>Contact</h1>
 
