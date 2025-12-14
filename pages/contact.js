@@ -81,5 +81,8 @@ export default function Contact() {
 
       {status && <p>{status}</p>}
     </div>
+  </main>
+    </>
   );
 }
+
