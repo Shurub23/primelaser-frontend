@@ -1,33 +1,81 @@
-import Navbar from "../components/Navbar";
-
+import { useState } from "react";
 
 export default function Contact() {
-async function submit(e) {
-e.preventDefault();
-const form = e.target;
-await fetch("https://BACKEND_RENDER_URL/contact", {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify({
-name: form.name.value,
-email: form.email.value,
-message: form.message.value
-})
-});
-alert("Mesaj trimis!");
-form.reset();
-}
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
 
+  const [status, setStatus] = useState("");
 
-return (
-<>
-<Navbar />
-<form onSubmit={submit} style={{ padding: 40 }}>
-<input name="name" placeholder="Nume" required /><br />
-<input name="email" placeholder="Email" required /><br />
-<textarea name="message" placeholder="Mesaj" required /><br />
-<button>Trimite</button>
-</form>
-</>
-);
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // FOARTE IMPORTANT
+
+    setStatus("Se trimite...");
+
+    try {
+      const res = await fetch(
+        "https://primelaser-backend.onrender.com/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(form)
+        }
+      );
+
+      if (res.ok) {
+        setStatus("Mesaj trimis cu succes!");
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        setStatus("Eroare la trimitere.");
+      }
+    } catch (err) {
+      setStatus("Server indisponibil.");
+    }
+  };
+
+  return (
+    <div>
+      <h1>Contact</h1>
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Nume"
+          value={form.name}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+
+        <textarea
+          name="message"
+          placeholder="Mesaj"
+          value={form.message}
+          onChange={handleChange}
+          required
+        />
+
+        <button type="submit">Trimite</button>
+      </form>
+
+      {status && <p>{status}</p>}
+    </div>
+  );
 }
