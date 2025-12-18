@@ -27,7 +27,7 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="PrimeLaser Cleaning"
-              className="h-40 w-auto"
+              className="h-60 w-auto"
             />
           </Link>
 
@@ -98,4 +98,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 
